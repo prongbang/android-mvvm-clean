@@ -3,6 +3,7 @@ package com.prongbang.mvvmclean.feature.feed.presentation
 import com.google.common.truth.Truth.assertThat
 import com.prongbang.mvvmclean.core.Results
 import com.prongbang.mvvmclean.core.livedata.observeOnce
+import com.prongbang.mvvmclean.core.livedata.testObserver
 import com.prongbang.mvvmclean.core.test.ViewModelTest
 import com.prongbang.mvvmclean.feature.feed.domain.Feed
 import com.prongbang.mvvmclean.feature.feed.domain.GetFeedListUseCase
@@ -30,5 +31,9 @@ class FeedViewModelTest : ViewModelTest() {
 		feedViewModel.feedDataSuccess.observeOnce {
 			assertThat(Results.Success(it)).isEqualTo(feedList)
 		}
+
+		// OR
+		val actual = feedViewModel.feedDataSuccess.testObserver().observedValues[0]
+		assertThat(Results.Success(actual)).isEqualTo(feedList)
 	}
 }
