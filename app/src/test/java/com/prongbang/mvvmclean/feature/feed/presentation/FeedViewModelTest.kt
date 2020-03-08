@@ -21,19 +21,19 @@ class FeedViewModelTest : ViewModelTest() {
 
 	@Test
 	fun getFeedList_ShouldReturnFeedList_WhenGetFeedSuccess() = runBlocking {
-		val feedList = Results.Success(listOf(
+		val feedListResult = Results.Success(listOf(
 				Feed(id = 1, title = "Title 1", subtitle = "Subtitle 1")
 		))
-		coEvery { getFeedListUseCase.execute(Unit) } returns feedList
+		coEvery { getFeedListUseCase.execute(Unit) } returns feedListResult
 
 		feedViewModel.getFeedList()
 
 		feedViewModel.feedDataSuccess.observeOnce {
-			assertThat(Results.Success(it)).isEqualTo(feedList)
+			assertThat(Results.Success(it)).isEqualTo(feedListResult)
 		}
 
 		// OR
 		val actual = feedViewModel.feedDataSuccess.testObserver().observedValues[0]
-		assertThat(Results.Success(actual)).isEqualTo(feedList)
+		assertThat(Results.Success(actual)).isEqualTo(feedListResult)
 	}
 }
